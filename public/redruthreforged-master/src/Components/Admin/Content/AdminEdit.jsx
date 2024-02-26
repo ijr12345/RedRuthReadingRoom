@@ -1,5 +1,5 @@
 import React, { useEffect }  from 'react'
-import { Box } from '@mui/material'
+import { MenuItem, Button, Select, Box, Typography, TableRow, TableContainer, Table, TableHead, TableCell, TableBody, TableSortLabel, responsiveFontSizes } from '@mui/material';
 import axios from '../../../API/axios'
 import ListenBox from '../../Listen/ListenBox';
 
@@ -27,10 +27,10 @@ function AdminEdit() {
     } 
 
     const getMutupleAudio = async() => {
-      setwaitingText('Please wait while we get your data')
+      setwaitingText('Please wait while we get your recordings')
       setvis(false)
       if(promptName == null){
-        setwaitingText("No Prompt Name is selected")
+        setwaitingText("No prompt is selected")
         return
       }
       const prompt_id = await axios.get('/api/admin/getPromptId?prompt_name=' + promptName);
@@ -70,80 +70,90 @@ function AdminEdit() {
   async function handelPromptChange(e){
     setPromptName(e.target.value)
   }
-  //<button onClick={getPrompts}>get prompts</button>
+
+  const optionStyle = {
+    display: "flex",
+    paddingTop: 3,
+    paddingBottom: 3,
+  }
        
     return (
   
       <>
+      <Typography variant='h4'>Listen</Typography>
+      <br />
 
-        <table>
-          <tr>
-            <td>Collection</td>
-            <td>Prompt</td>
+      <table>
+        <tr>
+          <td>
+          <Box sx={{width: "400px", paddingRight: 3}}>
+            <Typography>{'Collection'}</Typography>
+            <Select sx={{width: '100%', maxWidth: '400px', minWidth: '80px'}}
+            value={collectionName}
+            label="Collection"
+            onChange={handelCollectionChange}>
+                {listOfUserCollections.map((collectoins) => {
+                    return (
+                        <MenuItem value={collectoins.title}>{collectoins.title}</MenuItem>
+                    )
+                })}
             
-          </tr>
-          <tr>
-            <td>
-        <select onChange={ handelCollectionChange}>
-          {
-          listOfUserCollections.map((collectoins) =>{
-            
-            return(
-            <option value={collectoins.title}>{collectoins.title}</option>
-            )
-          })
-        }
-        </select></td>
-        <td>
-        {listOfPrompts != null && 
-        <select onChange={ handelPromptChange }>
-          {
-          listOfPrompts.map((prompts) =>{
-            
-            return(
-            <option value={prompts.prompt}>{prompts.prompt}</option>
-            )
-          })
-        }
-        
-        </select>
-        }
-        </td>
-        <button onClick={getMutupleAudio}> Get Audios</button>
-        </tr>
-        </table>
-        
-        
-        <div style={{paddingLeft: 30}}>
-        {vis == true && audioURLList.length == 0 && waitingText == 'Please wait while we get your data' &&
-        <text> There are no audios in this prompt</text> }
-        {vis == true && audioURLList.length != 0 &&
-          <table style = {{backgroundColor : 'white'}}>
-          <tr>
-            <td>Name</td>
-            <td>prompt</td>
-            <td>Recording</td>
-            <td>Deleate</td>
-          </tr>
+            </Select>
+          </Box>
+          </td>
+
+          <td>
+            {listOfPrompts != null &&
+            <Box sx={{width: "400px"}}>
+              <Typography>{'Prompt'}</Typography>
+              <Select sx={{width: '100%', maxWidth: '400px', minWidth: '80px'}}
+              value={promptName}
+              label="Prompt"
+              onChange={handelPromptChange}>
+                  {listOfPrompts.map((prompts) => {
+                      return (
+                          <MenuItem value={prompts.prompt}>{prompts.prompt}</MenuItem>
+                      )
+                  })}
+              
+              </Select>
+            </Box>
+            }
+            </td>
+        <Button variant="contained" onClick={getMutupleAudio} sx={{marginTop: 3, marginLeft:3, backgroundColor: '#323f54'}}>Get Recordings</Button>
+      </tr>
+      </table>
+
+      <br /><br />
+      <Typography variant='h4'>Recordings</Typography>
+      <br />
+
+      {vis == true && audioURLList.length == 0 && waitingText == 'Please wait while we get your data' &&
+      <text> There are no audios in this prompt</text> }
+      {vis == true && audioURLList.length != 0 &&
+        <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell>Prompt</TableCell>
+            <TableCell>Recording</TableCell>
+            <TableCell>Delete</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {
           audioURLList.map((individualAudio) =>{
             return(
-              <tr style = {{backgroundColor : 'white',
-              borderColor: 'black',
-              borderWidth: 100}}>
-              <ListenBox data = {individualAudio} prompt = {promptName}></ListenBox>
-              </tr>
-            
+              <TableRow>
+                <ListenBox data = {individualAudio} prompt = {promptName}></ListenBox>
+              </TableRow>        
             )
-            
           })}
-          
-          </table>
-        }{
-        vis == false && <text>{waitingText}</text>
-      }
-      
-      </div>
+        </TableBody>
+        </Table>
+        }
+        {vis == false && <text>{waitingText}</text>}
+
       </>
     )
   }

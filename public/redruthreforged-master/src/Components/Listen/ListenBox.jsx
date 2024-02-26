@@ -1,5 +1,8 @@
 import React from 'react'
 import axios from '../../API/axios'
+import {Button, IconButton} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 
 function ListenBox(params){  
@@ -21,8 +24,10 @@ function ListenBox(params){
             <td>
             <audio src={params.data.URL} type='audio/mpeg' controls></audio> 
             </td>
-            <td>
-            <button onClick={Deleate}>DELEATE</button>  
+            <td>            
+            <IconButton aria-label="delete" onClick={Deleate} sx={{marginLeft: 2, color: 'red'}}>
+                <DeleteIcon />
+            </IconButton>
             </td>
             </>    }
             </>
