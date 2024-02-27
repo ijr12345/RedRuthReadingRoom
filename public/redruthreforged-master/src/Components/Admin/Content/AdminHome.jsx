@@ -1,10 +1,12 @@
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Modal } from '@mui/material'
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Modal, Collapse } from '@mui/material'
 import React, { useContext, useState, useEffect } from 'react'
 import AdminContext from '../../../Context/AdminContext';
 import moment from 'moment';
 import PublicRecordButton from '../Buttons/PublicRecordButton';
 import PublicListenButton from '../Buttons/PublicListenButton';
 import NewCollection from '../util/NewCollection';
+import NewPrompt from '../util/NewPrompt';
+import Grid from '@mui/material/Grid';
 
 // This component returns the 'home' view of the admin page, AKA the user's collections.
 // Returns some text and the table of collections/collection-related buttons
@@ -28,7 +30,23 @@ function AdminHome(props) {
 
 	return (
 		<Box>
-			<Typography variant='h4'>Collections</Typography>
+
+			<Grid container spacing={2}>
+				<Grid xs={.2}></Grid>
+				<Grid xs={9.6}>
+					<Typography variant='h4'>Collections</Typography>
+				</Grid>
+				<Grid xs={1} sx={{}}>
+					<NewCollection />
+				</Grid>
+				<Grid xs={.2} sx={{}}></Grid>
+				<Grid xs={1}>
+					<NewPrompt />
+				</Grid>
+			</Grid>
+
+			<br />
+
 			<TableContainer component={Paper}>
 				<Table>
 					<TableHead>
@@ -42,10 +60,12 @@ function AdminHome(props) {
 						</TableRow>
 					</TableHead>
 					<TableBody>
+						
 						{collections.map((collection) => {
 							return (
 							<TableRow sx={rowStyle} key={collection.collection_id} >
 								<TableCell onClick={() => updateCurrCollection(collection.collection_id, collection.title)}>{collection.title}</TableCell>
+									
 								<TableCell onClick={() => updateCurrCollection(collection.collection_id, collection.title)}>{collection.file_count}</TableCell>
 								<TableCell onClick={() => updateCurrCollection(collection.collection_id, collection.title)}>{collection.unlistened_count}</TableCell>
 								<TableCell onClick={() => updateCurrCollection(collection.collection_id, collection.title)}>{moment.utc(collection.created_dt).format("MMM Do, YYYY")}</TableCell>
@@ -54,7 +74,7 @@ function AdminHome(props) {
 							</TableRow>
 							)
 						})}
-						<NewCollection />
+						
 					</TableBody>
 				</Table>
 			</TableContainer>

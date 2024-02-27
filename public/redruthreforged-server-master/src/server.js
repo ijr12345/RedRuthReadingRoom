@@ -230,6 +230,21 @@ server.post('/api/admin/createcollection/', (req, res) => {
         });
 })
 
+// create prompt in admin console
+server.post('/api/admin/createprompt/', (req, res) => {
+    const info = req.body;
+    var user_id = 12345;
+    var collectionID = info.cID
+    var prompt_name = info.pName;
+    var prompt_description = info.pDescription;
+
+    //add prompt to database
+    connection.query('Insert into t_prompt (collection_id, user_id, prompt, description, created_dt) values (?, ?, ? , ?, CURDATE())', [collectionID, user_id, prompt_name, prompt_description], function (error, results, fields) {
+        if (error) throw error;
+        res.json(results);
+        });
+})
+
 // Multer Configuration
 const multer = require('multer');
 const storage = multer.diskStorage({
