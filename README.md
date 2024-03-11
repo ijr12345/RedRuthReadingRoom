@@ -7,9 +7,9 @@ The Redruth Reading Room serves as a platform for administrators to generate aud
 ## Project Documentation
 Comprehensive user and project code information: https://docs.google.com/document/d/1j3MFsgCvuR-3JhLWFGDM-n9m6-IklNo3FuLf6Yl22xQ/edit
 
-Website functionality walkthrough - Video:
+Website functionality walkthrough - Video: https://www.youtube.com/watch?v=NY2JuSEOkKU&t=2s 
 
-Codebase walkthrough - Video: 
+Codebase walkthrough - Video: https://www.youtube.com/watch?v=I5TzoukEHLg
 
 ## Current Functionality
 * Home page: Welcomes user with a website description and introductory content. 
